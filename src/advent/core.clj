@@ -7,8 +7,11 @@
   [& args]
   (println "Hello, World!"))
 
+(defn mapToFrequencies [file]
+  (map #(Integer/parseInt %)
+    (str/split
+      (slurp file) #"\n")))
+
 (defn dayone [file]
   (reduce +
-    (map #(Integer/parseInt %)
-      (str/split
-        (slurp file) #"\n"))))
+    (mapToFrequencies file)))
