@@ -15,3 +15,15 @@
 (defn dayone [file]
   (reduce +
     (mapToFrequencies file)))
+
+(defn applyFrequencies [currentFrequencies changes]
+  (def freqs (reduce
+    #(conj %1 (+ (last %1) %2)) currentFrequencies changes))
+  (cond
+    (> (count freqs) 1000000000) freqs
+    (= (count freqs) (count (distinct freqs))) (applyFrequencies freqs changes)
+    :else (first (first (filter #(not= (first %1) (last %1)) (map vector freqs (distinct freqs)))))
+    ))
+
+(defn calibrate [file]
+  (applyFrequencies [0] (mapToFrequencies file)))
